@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  Url:
+  <b><%= @folder.url %> | </b>
+  Title: | 
+  <b><%= @folder.title %></b>
+  Location:
+  <b><%= @folder.location %></b>
+</p>
+
+<% @folder.comments.each do |comment| %>
+	<div class="comment">
+		<em><%= comment.username %>:</em> 
+		<%= comment.content %>
+	</div>
+<% end %>
+
+<%= link_to 'New Comment', :controller => :comments, :action => :new, :folder => @folder.url %>
+<%= link_to 'Make link FILE', :controller => :folders, :action => :makelink, :folder => @folder.url %>
+<%= link_to 'Make link DIRECT', :controller => :folders, :action => :makelinkfile, :folder => @folder.url %>
+
+<%= link_to 'Edit', edit_folder_path(@folder) %> |
+<%= link_to 'Back', folders_path %>

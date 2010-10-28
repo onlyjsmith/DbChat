@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  folder_id: 1
+  username: MyString
+  updated_at: 2010-10-28
+  content: MyString
+
+two:
+  folder_id: 1
+  username: MyString
+  updated_at: 2010-10-28
+  content: MyString
