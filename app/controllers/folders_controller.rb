@@ -114,11 +114,13 @@ class FoldersController < ApplicationController
     # file_download = File.open('tmp/testfile.txt')
     # send_data file #'tmp/testfile.txt'
     session = Dropbox::Session.new('guz0cfjji0pz9pm', 'qfx1avcs77qjbek')
-    session.authorize
-    # puts "Visit #{session.authorize_url} to log in to Dropbox. Hit enter when you have done this."
     # debugger
-    # session.create_folder ('new')
-    session.upload('tmp/testfile.txt', '/Test')
+    
+    session.authorize
+    session.create_folder ('new')
+    # session.account
+    debugger
+    # session.create_folder ('test/wow')
     # uploaded_file = session.file('testfile.txt')
   end
   
