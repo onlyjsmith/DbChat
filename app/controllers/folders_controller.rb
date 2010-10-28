@@ -115,7 +115,7 @@ class FoldersController < ApplicationController
     # send_data file #'tmp/testfile.txt'
     session = Dropbox::Session.new('guz0cfjji0pz9pm', 'qfx1avcs77qjbek')
     # debugger
-    
+    puts session.authorize_url
     session.authorize
     session.create_folder ('new')
     # session.account

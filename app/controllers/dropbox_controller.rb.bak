@@ -7,7 +7,7 @@ class DropboxController < ApplicationController
 
        redirect_to :action => 'upload'
      else
-       dropbox_session = Dropbox::Session.new('guz0cfjji0pz9pm', 'qfx1avcs77qjbek')
+       dropbox_session = Dropbox::Session.new('key', 'secret')
        session[:dropbox_session] = dropbox_session.serialize
        redirect_to dropbox_session.authorize_url(:oauth_callback => url_for(:action => 'authorize'))
      end
