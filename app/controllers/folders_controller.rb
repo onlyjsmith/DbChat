@@ -132,7 +132,7 @@ class FoldersController < ApplicationController
     dropbox_session.authorize
     dropbox_session.mode = :dropbox
     
-    file = File.open("tmp/testfile.txt")
+    file = File.open("lib/testfile.txt")
     dropbox_session.upload(file, "test/")
     
     @account = dropbox_session.account
