@@ -116,7 +116,7 @@ class FoldersController < ApplicationController
     
   def makelinkfile
     folder = params[:folder]
-    file =
+    filecontent =
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
         <html>
         <head>
@@ -127,14 +127,17 @@ class FoldersController < ApplicationController
         </BODY>
         </HTML>'
     
-    # send_data file, :type => 'text/html', :filename => 'link.html'
     dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
     dropbox_session.authorize
     dropbox_session.mode = :dropbox
-    
-    file = File.open("lib/testfile.txt")
-    dropbox_session.upload(file, "test/")
-    
+
+    # TODO: Make the dynamic file - figuring it out in a plain rb app...
+
+    File.open("tmp/DropboxChat.html", 'w') do |f|
+      f.puts(filecontent)
+    end
+    dropbox_session.upload("tmp/DropboxChat.html", "test/")
+
     @account = dropbox_session.account
   end
   
