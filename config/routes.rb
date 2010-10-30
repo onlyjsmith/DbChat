@@ -13,9 +13,10 @@ Dropboxchatapp::Application.routes.draw do
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
-  match 'makelink' => 'folders#makelink'
-  match 'makelinkfile'  =>  'folders#makelinkfile'
-  match 'authorize' => 'folders#authorize'
+  match 'makelink' => 'dropbox#makelink'
+  match 'makelinkfile'  =>  'dropbox#makelinkfile'
+  match 'authorize' => 'dropbox#authorize'
+  match 'listfolders' => 'dropbox#listfolders'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

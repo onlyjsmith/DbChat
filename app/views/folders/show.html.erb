@@ -17,10 +17,10 @@
 <% end %>
 
 <%= link_to 'New Comment', :controller => :comments, :action => :new, :folder => @folder.url %>
-<%= link_to 'Make link FILE', :controller => :folders, :action => :makelink, :folder => @folder.url %>
-<%= link_to 'Make link DIRECT', :controller => :folders, :action => :makelinkfile, :folder => @folder.url %>
+<%= link_to 'Make link FILE', :controller => :dropbox, :action => :makelink, :folder => @folder.url %>
+<%= link_to 'Make link DIRECT', :controller => :dropbox, :action => :makelinkfile, :folder => @folder.url %>
 </br>
-<%= link_to 'Authorize', :controller => :folders, :action => :authorize %>
+<%= link_to 'Authorize', :controller => :dropbox, :action => :authorize %>
 </br>
 <%= link_to 'Edit', edit_folder_path(@folder) %> |
 <%= link_to 'Back', folders_path %>
