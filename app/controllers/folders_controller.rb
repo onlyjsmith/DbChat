@@ -80,7 +80,7 @@ class FoldersController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
   def makelink
     @folder = params[:folder]
     file =
@@ -96,32 +96,46 @@ class FoldersController < ApplicationController
     send_data file, :type => 'text/html', :filename => 'link.html'
     # redirect_to :back and return
   end
+
+
+  # This was copied from Dropbox gem - no idea if it should go in here. Seems like it needs a session already set up
+   def authorize
+     if params[:oauth_token] then
+       dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
+       dropbox_session.authorize(params)
+       session[:dropbox_session] = dropbox_session.serialize # re-serialize the authenticated session
+  
+       redirect_to :action => 'makelinkfile'
+     else
+       dropbox_session = Dropbox::Session.new('6ov6muazu1umw24', 'yzhax5he3o5t4ci')
+       session[:dropbox_session] = dropbox_session.serialize
+       redirect_to dropbox_session.authorize_url(:oauth_callback => root_url)
+     end
+   end
+  
     
   def makelinkfile
-    @folder = params[:folder]
+    folder = params[:folder]
     file =
-    '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-    <html>
-    <head>
-    <title>Redirection coming up...</title>
-    <meta http-equiv="REFRESH" content="0;url=http://localhost:3000/folders/'+@folder.to_s+'"></HEAD>
-    <BODY>
-    Redirecting to your desired page.
-    </BODY>
-    </HTML>'
+        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+        <html>
+        <head>
+        <title>Redirection coming up...</title>
+        <meta http-equiv="REFRESH" content="0;url=http://localhost:3000/folders/'+folder.to_s+'"></HEAD>
+        <BODY>
+        Redirecting to your desired page.
+        </BODY>
+        </HTML>'
     
     # send_data file, :type => 'text/html', :filename => 'link.html'
-    # file_download = File.open('tmp/testfile.txt')
-    # send_data file #'tmp/testfile.txt'
-    session = Dropbox::Session.new('guz0cfjji0pz9pm', 'qfx1avcs77qjbek')
-    # debugger
-    puts session.authorize_url
-    session.authorize
-    session.create_folder ('new')
-    # session.account
-    debugger
-    # session.create_folder ('test/wow')
-    # uploaded_file = session.file('testfile.txt')
+    dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
+    dropbox_session.authorize
+    dropbox_session.mode = :dropbox
+    
+    file = File.open("tmp/testfile.txt")
+    dropbox_session.upload(file, "test/")
+    
+    @account = dropbox_session.account
   end
   
   def upload

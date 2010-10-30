@@ -15,6 +15,7 @@ Dropboxchatapp::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
   match 'makelink' => 'folders#makelink'
   match 'makelinkfile'  =>  'folders#makelinkfile'
+  match 'auth' => 'folders#authorize'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
