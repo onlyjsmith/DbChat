@@ -98,7 +98,7 @@ class FoldersController < ApplicationController
   end
 
 
-  # This was copied from Dropbox gem - no idea if it should go in here. Seems like it needs a session already set up
+  # TODO: This was copied from Dropbox gem - no idea if it should go in here. Seems like it needs a session already set up
    def authorize
      if params[:oauth_token] then
        dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
@@ -109,7 +109,10 @@ class FoldersController < ApplicationController
      else
        dropbox_session = Dropbox::Session.new('6ov6muazu1umw24', 'yzhax5he3o5t4ci')
        session[:dropbox_session] = dropbox_session.serialize
+
+       # ORIGINAL: 
        redirect_to dropbox_session.authorize_url(:oauth_callback => root_url)
+       # redirect_to dropbox_session.authorize_url(:oauth_callback => 'http://www.google.com')
      end
    end
   
@@ -127,17 +130,16 @@ class FoldersController < ApplicationController
         </BODY>
         </HTML>'
     
+    # TODO: Sort this out! At the moment it still requires user to click "authorize" link, then close that window and then click the action they want. This SUCKS!
     dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
     dropbox_session.authorize
     dropbox_session.mode = :dropbox
 
-    # TODO: Make the dynamic file - figuring it out in a plain rb app...
-
+    # TODO: Make the dynamic file in a smarter way - this way will cause problems if more than 1 person using it...
     File.open("tmp/DropboxChat.html", 'w') do |f|
       f.puts(filecontent)
     end
     dropbox_session.upload("tmp/DropboxChat.html", "test/")
-
     @account = dropbox_session.account
   end
   
