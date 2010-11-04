@@ -46,17 +46,12 @@ class DropboxController < ApplicationController
         Redirecting to your desired page.
         </BODY>
         </HTML>'
-  
-    # # TODO: Sort this out! At the moment it still requires user to click "authorize" link, then close that window and then click the action they want. This SUCKS!
-    #  dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
-    #  dropbox_session.authorize
-    #  dropbox_session.mode = :dropbox
 
     # Copied this from https://github.com/RISCfuture/dropbox
     return redirect_to(:action => 'authorize') unless session[:dropbox_session]
     dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
     return redirect_to(:action => 'authorize') unless dropbox_session.authorized?
-    debugger
+
     
     # TODO: Make the dynamic file in a smarter way - this way will cause problems if more than 1 person using it...
     File.open("tmp/DropboxChat.html", 'w') do |f|
@@ -69,12 +64,13 @@ class DropboxController < ApplicationController
   end
 
   def listfolders
-    # TODO: Expecting this to have the same need for clicking the authorize link before this will work...
+    return redirect_to(:action => 'authorize') unless session[:dropbox_session]
     dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
-    dropbox_session.authorize
+    return redirect_to(:action => 'authorize') unless dropbox_session.authorized?
+
     dropbox_session.mode = :dropbox
     @list = dropbox_session.list '/'
-    debugger
+
     puts @list
   end
 end
