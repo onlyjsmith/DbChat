@@ -16,6 +16,17 @@ class DropboxController < ApplicationController
   end
 
   def authorize
+   # Load secret data from secret file!
+   f = File.open("secret", "r")
+   a = []
+   f.each_line do |s|
+     a << s.chomp
+   end
+   key = a[0]
+   secret = a[1]
+   f.close
+   
+   
    if params[:oauth_token] then
      dropbox_session = Dropbox::Session.deserialize(session[:dropbox_session])
      dropbox_session.authorize(params)
@@ -23,7 +34,7 @@ class DropboxController < ApplicationController
 
      redirect_to :action => 'makelinkfile'
    else
-     dropbox_session = Dropbox::Session.new('6ov6muazu1umw24', 'yzhax5he3o5t4ci')
+     dropbox_session = Dropbox::Session.new(key, secret)
      session[:dropbox_session] = dropbox_session.serialize
 
      # ORIGINAL: 
@@ -70,7 +81,6 @@ class DropboxController < ApplicationController
 
     dropbox_session.mode = :dropbox
     @list = dropbox_session.list '/'
-
-    puts @list
+    
   end
 end
